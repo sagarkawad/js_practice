@@ -1,5 +1,5 @@
 // app.mjs or app.js (if "type": "module" is in package.json)
-import express from "express";
+const express = require("express");
 const app = express();
 
 let requestCount = 0;
