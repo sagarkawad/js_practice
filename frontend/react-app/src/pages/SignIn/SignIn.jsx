@@ -1,9 +1,31 @@
 import React from "react";
 import { useState } from "react";
 
-const SignIn = () => {
+const SignIn = ({ setSignedInUser }) => {
   const [name, setName] = useState("");
   const [pass, setPass] = useState("");
+
+  function signedInUserDataFetcher() {
+    const url = "http://localhost:3000/users"; // Replace with your API endpoint
+    const token = localStorage.getItem("authToken");
+
+    fetch(url, {
+      method: "GET",
+      headers: {
+        Authorization: `${token}`, // Standard header for bearer tokens
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Success:", data);
+        localStorage.setItem("user", data[0].decodedUser);
+        setSignedInUser(localStorage.getItem("user"));
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  }
 
   function dataFetcher() {
     const url = "http://localhost:3000/signin"; // Replace with your API endpoint
@@ -30,6 +52,7 @@ const SignIn = () => {
         token = data.token;
         localStorage.setItem("authToken", token);
         console.log(token);
+        signedInUserDataFetcher();
         setName("");
         setPass("");
       })
@@ -66,11 +89,11 @@ const SignIn = () => {
         </div>
         <button
           onClick={dataFetcher}
-          className="border w-24 rounded bg-green-300 mt-4"
+          className="border w-24 rounded bg-green-300 mt-4 h-8"
         >
           Sign In
         </button>
-        <button className="border w-24 rounded bg-green-300 mt-4 ml-4">
+        <button className="border w-24 rounded bg-red-300 mt-4 ml-4 h-8">
           Log Out
         </button>
       </div>

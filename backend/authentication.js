@@ -69,7 +69,7 @@ app.get("/users", function (req, res) {
     }
   }
 
-  res.json(userArr);
+  res.json([{ decodedUser }, userArr]);
 });
 
 app.listen(3000, () => {
