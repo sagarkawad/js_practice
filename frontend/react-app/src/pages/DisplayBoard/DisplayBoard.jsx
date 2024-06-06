@@ -1,12 +1,14 @@
 import React from "react";
 import { useState } from "react";
 
-const DisplayBoard = ({ signedInUser }) => {
-  const [otherUsers, setOtherUsers] = useState([]);
-
+const DisplayBoard = ({ signedInUser, otherUsers, setOtherUsers }) => {
   function signedInUserDataFetcher() {
     const url = "http://localhost:3000/users"; // Replace with your API endpoint
     const token = localStorage.getItem("authToken");
+
+    if (!token) {
+      return;
+    }
 
     fetch(url, {
       method: "GET",

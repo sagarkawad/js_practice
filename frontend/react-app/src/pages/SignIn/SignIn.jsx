@@ -1,9 +1,18 @@
 import React from "react";
 import { useState } from "react";
 
-const SignIn = ({ setSignedInUser }) => {
+const SignIn = ({ setSignedInUser, setOtherUsers }) => {
   const [name, setName] = useState("");
   const [pass, setPass] = useState("");
+
+  function logoutHandler() {
+    localStorage.removeItem("authToken");
+    localStorage.removeItem("user");
+    setSignedInUser("");
+    setOtherUsers([]);
+
+    console.log("logged out");
+  }
 
   function signedInUserDataFetcher() {
     const url = "http://localhost:3000/users"; // Replace with your API endpoint
@@ -93,7 +102,10 @@ const SignIn = ({ setSignedInUser }) => {
         >
           Sign In
         </button>
-        <button className="border w-24 rounded bg-red-300 mt-4 ml-4 h-8">
+        <button
+          className="border w-24 rounded bg-red-300 mt-4 ml-4 h-8"
+          onClick={logoutHandler}
+        >
           Log Out
         </button>
       </div>
