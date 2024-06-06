@@ -62,6 +62,7 @@ const SignIn = ({ setSignedInUser, setOtherUsers }) => {
         localStorage.setItem("authToken", token);
         console.log(token);
         signedInUserDataFetcher();
+        setOtherUsers([]);
         setName("");
         setPass("");
       })
