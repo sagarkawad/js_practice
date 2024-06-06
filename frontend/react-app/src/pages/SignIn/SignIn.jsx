@@ -8,9 +8,10 @@ const SignIn = () => {
   function dataFetcher() {
     const url = "http://localhost:3000/signin"; // Replace with your API endpoint
     const data = {
-      username: "yourUsername",
-      pass: "yourPassword",
+      username: name,
+      pass: pass,
     };
+    let token;
 
     fetch(url, {
       method: "POST",
@@ -23,6 +24,14 @@ const SignIn = () => {
       .then((response) => response.json()) // Parse the JSON response
       .then((data) => {
         console.log("Success:", data);
+        if (!data.token) {
+          return;
+        }
+        token = data.token;
+        localStorage.setItem("authToken", token);
+        console.log(token);
+        setName("");
+        setPass("");
       })
       .catch((error) => {
         console.error("Error:", error);
@@ -37,6 +46,7 @@ const SignIn = () => {
           <label htmlFor="Name">Name</label>
           <input
             type="text"
+            value={name}
             onChange={(e) => {
               setName(e.target.value);
             }}
@@ -46,6 +56,7 @@ const SignIn = () => {
         <div className="flex flex-col">
           <label htmlFor="Password">Password</label>
           <input
+            value={pass}
             onChange={(e) => {
               setPass(e.target.value);
             }}
@@ -57,7 +68,10 @@ const SignIn = () => {
           onClick={dataFetcher}
           className="border w-24 rounded bg-green-300 mt-4"
         >
-          Sign in
+          Sign In
+        </button>
+        <button className="border w-24 rounded bg-green-300 mt-4 ml-4">
+          Log Out
         </button>
       </div>
     </section>
