@@ -1,7 +1,12 @@
 import { useEffect, useState } from "react";
 import SignIn from "./pages/SignIn/SignIn";
 import DisplayBoard from "./pages/DisplayBoard/DisplayBoard";
-import { createBrowserRouter, RouterProvider, Link } from "react-router-dom";
+import {
+  createBrowserRouter,
+  RouterProvider,
+  Link,
+  Outlet,
+} from "react-router-dom";
 import "./App.css";
 
 function App() {
@@ -23,37 +28,38 @@ function App() {
             </Link>
             <Link to="/users">Users</Link>
           </nav>
-          <SignIn
-            setSignedInUser={setSignedInUser}
-            setOtherUsers={setOtherUsers}
-          />
+          <div>
+            <Outlet />
+          </div>
         </>
       ),
-    },
-    {
-      path: "users",
-      element: (
-        <>
-          <nav>
-            <Link to="/" className="mr-8">
-              Sign In
-            </Link>
-            <Link to="/users">Users</Link>
-          </nav>
-          <DisplayBoard
-            signedInUser={signedInUser}
-            otherUsers={otherUsers}
-            setOtherUsers={setOtherUsers}
-          />
-        </>
-      ),
+      children: [
+        {
+          path: "/",
+          element: (
+            <SignIn
+              setSignedInUser={setSignedInUser}
+              setOtherUsers={setOtherUsers}
+            />
+          ),
+        },
+        {
+          path: "/users",
+          element: (
+            <DisplayBoard
+              signedInUser={signedInUser}
+              otherUsers={otherUsers}
+              setOtherUsers={setOtherUsers}
+            />
+          ),
+        },
+      ],
     },
   ]);
 
   return (
     <div className="p-4">
       <h1 className="text-red-500">React App</h1>
-
       <RouterProvider router={router} />
     </div>
   );
